@@ -15,7 +15,7 @@ sample_table ={'GUIDELINES FOR IEC 61499 DEVELOPMENT IN ECLIPSE 4DIAC IDE\n': 73
 
 root = tk.Tk()
 root.title("Theses matching")
-root.geometry("520x520")
+root.geometry("557x520")
 
 n=0
 
@@ -33,7 +33,10 @@ for v,q in base.items():
 
 label.pack(pady=30)
 
-
+"""
+zero_label = tk.Label(root,text="0").pack(side="left", pady=0,padx=(55,0), anchor="n")
+ten_label = tk.Label(root,text="10").pack(side="right",pady=0,padx=(0,55), anchor="n")
+"""
 def draw_table(table):
     # define columns
     columns = ("№",'topic_name')
@@ -104,10 +107,10 @@ slider = ttk.Scale(
 slider.set(5)
 slider.pack(pady=10)
 
-bf=tk.Button(root, text="Next",width=15,command=forward_button)
-bf.pack(side="right",padx=25,pady=10,anchor="n")#.place(x=25,y=130)
-bb=tk.Button(root, text="Previous",width=15)
-bb.pack(side="left",padx=25,pady=10,anchor="n")#.place(x=325,y=130)
+bf=tk.Button(root, text="Next",width=50,command=forward_button)
+bf.pack(side="right",pady=10,padx=(0,25), anchor="n")#.place(x=25,y=130)
+bb=tk.Button(root, text="Edit",width=10)
+bb.pack(side="left",pady=10,padx=(25,0), anchor="n")#.place(x=325,y=130)
 
 draw_table(sample_table)
 
