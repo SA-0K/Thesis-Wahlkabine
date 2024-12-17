@@ -1,3 +1,11 @@
+"""
+Extract data from PDFs
+@author Oleksandr Kudriavchenko
+
+Copyright 2024 Johannes Kepler University Linz
+LIT Cyber-Physical Systems Lab
+All rights reserved
+"""
 from pypdf import PdfReader 
 
 

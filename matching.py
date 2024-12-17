@@ -1,3 +1,13 @@
+"""
+Mathcing user choices to topics. Generating rating
+@author Oleksandr Kudriavchenko
+
+Copyright 2024 Johannes Kepler University Linz
+LIT Cyber-Physical Systems Lab
+All rights reserved
+"""
+
+
 from math import sqrt
 
 
@@ -9,7 +19,7 @@ def Euclidean(x,y):
             result+= (a-b)**2
         return sqrt(result)
     else:
-        return 100 # Error code, returning distance that is bigger than diagnal
+        return 100 # Error code, returning distance that is bigger than diagonal
 
 
 def Euclidean_matching(User,Topic):

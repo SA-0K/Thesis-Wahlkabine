@@ -1,3 +1,12 @@
+"""
+Creating, editing and reading database
+@author Oleksandr Kudriavchenko
+
+Copyright 2024 Johannes Kepler University Linz
+LIT Cyber-Physical Systems Lab
+All rights reserved
+"""
+
 import pymongo
 from random import randint
 
