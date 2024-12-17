@@ -25,17 +25,16 @@ for i in range(1,4):
 already_been_asked=[]
 def generate_questions(number):
     while 1:
-        keywords = get_questions_keywords(number)
-        if not keywords in already_been_asked:
-           already_been_asked.append(keywords)
-           break 
+        keyword = get_questions_keywords(number)[0]
+        keyword=keyword.replace("\n","").replace("  "," ")
+        if not keyword in already_been_asked:
+            already_been_asked.append(keyword)
+            break 
 
 
     questions={}
     
-    for i,keyword in enumerate(keywords):
-        keyword=keyword.replace("\n","").replace("  "," ")
-        questions_template=[
+    questions_template=[
 
         f"How proficient are you with {keyword} (0-10)?",
         f"How often do you use {keyword} in your daily work (0-10)?",
@@ -46,9 +45,9 @@ def generate_questions(number):
 
         ]
 
-        questions[keyword]=questions_template[i%len(questions_template)]
+    questions[keyword]=questions_template[randint(0,len(questions_template)-1)]
 
-        """questions_template=[
+    """questions_template=[
         f"How often do you use {keyword} in your daily work (0-10)?",
         f"How satisfied are you with your current {keyword} (0-10)?",
         f"How important is a good {keyword} to your productivity (0-10)?",
@@ -62,6 +61,7 @@ def generate_questions(number):
     return questions
 
 
+print_db()
 
 user_interests ={}
 
@@ -76,16 +76,14 @@ def temp_sol(tmp,answer):
         tmp[key]=answer"""
 for i in get_all_keywords():
         user_interests[i]=0
-def assign_values(question_with_key, answer):
+def assign_values(key, answer):
+    
     global user_interests
-    for i in get_all_keywords():
-        #user_interests[i]=0
-        for key, val in question_with_key.items():
-            if key==i:
-                user_interests[i]=answer
-                print(answer)
+    if key in get_all_keywords():
+        user_interests[key]=answer
+                #print(answer)
 
-    print(user_interests)
+    #print(user_interests)
 
 def generate_new_dict():
     distance_dict=(rating(user_interests,get_name_vector()))
@@ -93,3 +91,15 @@ def generate_new_dict():
 
     sorted_dict={k: v for k, v in sorted(distance_dict.items(),key=lambda item: item[1])}
     return (sorted_dict)
+
+def show_history(user_interests,already_asked):
+    history={}
+    
+    for key,value in sorted(user_interests.items()):
+        if key in already_asked[:-1]:
+            history[key]=value
+        else:
+            print(already_asked)
+            print(already_been_asked)
+
+    return history
