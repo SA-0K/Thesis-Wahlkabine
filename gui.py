@@ -19,6 +19,7 @@ questions =[
 "How interested are you in formal methods?",
 "How proficient are you with Threshold Analysis (0-10)?"
 ]
+updating_key=''
 
 sample_table ={'GUIDELINES FOR IEC 61499 DEVELOPMENT IN ECLIPSE 4DIAC IDE\n': 73.03423854604085, 'C++FUNCTIONBLOCKVERIFIERLITCyber-Physical SystemsLab\n': 73.03423854604085, 'TEXTUAL DELTA MODEL INFRASTRUCTURE FOR EXPRESSING CONTROL SOFTWARE VARIABILITY\n': 73.03423854604085, 'VISUALISATION OF OPC UA INFORMATION MODEL\n': 73.03423854604085, 'INFORMATION TRACEABILITY BETWEEN VARIABILITY ARTIFACTS AND THEIR RELATED VARIANTS\n': 73.44385610791416, '“THESIS-WAHLKABINE”: DEVELOPING AN ONLINE WEB-BASED PLATFORM FOR MATCHING STUDENTS TO THESIS TOPICS\n': 73.71566997592845, 'BRINGING THE DESIGN OF FEEDBACK CONTROL LAWS RIGHT INTO THE DISTRIBUTED CONTROL SOFTWARE\n': 73.71566997592845, 'DEVELOPING AN EXTRACTOR FOR MINING VARIABILITY FROM PRODUCT VARIANTS\n': 73.85120175054702, 'ENSURING DATA QUALITY IN PRODUCTION SYSTEMS\n': 73.98648525237566}
 
@@ -86,7 +87,11 @@ def change():
 
     #n=  0 if (n==len(questions)-1) else n+1
     
-    
+def update_values():
+    global chose_val
+    assign_values(updating_key,current_slider_value2.get())
+    chose_val.destroy()
+
 def forward_button():
     global question, value,base
     for v,q in base.items():
@@ -127,17 +132,20 @@ def edit():
         tree.insert('', tk.END,values=(key,round(value,1)))
         
     def item_selected(event):
+        global updating_key,chose_val
         for selected_item in tree.selection():
             item = tree.item(selected_item)
             record = item['values']
+            updating_key=record[0]
             # show a message
+            
             chose_val=tk.Toplevel(root)
             chose_val.geometry('350x200')
             #edit_window.grab_release()
             #chose_val.grab_set()
             chose_val.title("Choose new value  :)")
-
-            l=tk.Label(chose_val,text=record).pack()
+            #print(record)
+            l=tk.Label(chose_val,text=record[0]).pack()
             bf1=tk.Button(root, text="Ok",width=50)
             slider2 = ttk.Scale(
                 chose_val,
@@ -148,8 +156,10 @@ def edit():
                 command=slider_changed,
                 variable=current_slider_value2
             )
-            slider2.set(5)
+            slider2.set(record[-1])
             slider2.pack(pady=10)
+            chose_val.protocol("WM_DELETE_WINDOW",update_values)
+            
             #showinfo(title='Information', message=','.join(record))
     tree.bind('<<TreeviewSelect>>', item_selected)
 
