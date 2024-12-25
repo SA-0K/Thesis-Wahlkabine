@@ -16,6 +16,9 @@ db = myclient["Database_"]
 col = db["Theses"]
 
 def insert_db(arr):
+    """
+    Adds a new topic to database
+    """
     name, supervisor, descryption, keywords = arr[0], arr[1], arr[2], arr[3] 
     mydict = { "name":name, "supervisor":supervisor, "descryption":descryption, "keywords":keywords }
     col.insert_one(mydict)
@@ -28,6 +31,11 @@ def print_db():
 
 
 def get_name_vector():
+    """
+    Returns an array of dictionaries
+    [{name:"a",vector:"1 1 1"},
+     {name:"b",vector:"2 3 7"}]
+    """
     result =[]
     for c in col.find():
         tmp = {}
@@ -45,12 +53,12 @@ def get_all_keywords():
     return all_keywords
 
 def generate_vectors():
+    """
+    Generates positions for topics on a coordinate axis
+    """
 
-    # CHECK IF 10
-    #col.update_many({},{"$set":{"vector":0}} )
     all_keywords=get_all_keywords()
 
-    #print(len(all_keywords))
     for c in col.find():
         vect={}
         for k in all_keywords:
@@ -65,10 +73,7 @@ def generate_vectors():
     
 
 
-
-
-
-def get_questions_keywords(n):
+def get_n_random_keywords(n):
     result = []
     tmp=[]
 

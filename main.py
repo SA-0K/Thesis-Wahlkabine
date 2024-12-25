@@ -15,29 +15,27 @@ from time import sleep
 from matching import rating
 
 
+user_interests ={}
+already_asked_questions=[]
+
 def generate_db():
+    """
+    Adds topics from PDF's
+    to database
+    """
     for file in glob("./Theses_Docs/*.pdf"):
         insert_db(get_keywords(get_thesis_data(file)))
         sleep(30)
 
     generate_vectors()
 
-"""
-for i in range(1,4):
-    try:
-        insert_db(get_keywords(get_thesis_data(f"{i}.pdf")))
-    except:
-        print(f"{i}. :o ")
-"""
-#generate_db()
-#print_db()
-already_been_asked=[]
+
 def generate_questions(number):
     while 1:
-        keyword = get_questions_keywords(number)[0]
+        keyword = get_n_random_keywords(number)[0]
         keyword=keyword.replace("\n","").replace("  "," ")
-        if not keyword in already_been_asked:
-            already_been_asked.append(keyword)
+        if not keyword in already_asked_questions:
+            already_asked_questions.append(keyword)
             break 
 
 
@@ -70,29 +68,18 @@ def generate_questions(number):
     return questions
 
 
-print_db()
-
-user_interests ={}
 
 
-def temp_sol(tmp,answer):
-    return 
-    """tmp=generate_questions(1)
-    for key, val in tmp.items():
-        print(val)
-        curr_q=val
-        #answer=int(input())
-        tmp[key]=answer"""
 for i in get_all_keywords():
         user_interests[i]=5 #user is neutral in the begining
+
 def assign_values(key, answer):
     
     global user_interests
     if key in get_all_keywords():
         user_interests[key]=answer
-                #print(answer)
-
-    #print(user_interests)
+                
+                
 
 def generate_new_list():
     """
@@ -117,7 +104,7 @@ def show_history(user_interests,already_asked):
         """
         else:
             print(already_asked)
-            print(already_been_asked)
+            print(already_asked_questions)
             """
 
     return history

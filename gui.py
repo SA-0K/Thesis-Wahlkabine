@@ -109,7 +109,7 @@ def forward_button():
 
 def edit():
     
-    history=show_history(user_interests,already_been_asked)
+    history=show_history(user_interests,already_asked_questions)
     
     edit_window=tk.Toplevel(root)
     edit_window.geometry('400x400')
