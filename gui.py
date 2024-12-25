@@ -61,7 +61,7 @@ def draw_table(table):
     tree.column("topic_name",width=480)
 
     n=1
-    for name,dist in table.items():
+    for name in table:
         tree.insert('', tk.END,values=(n,name))
         n+=1
 
@@ -71,7 +71,7 @@ def draw_table(table):
             item = tree.item(selected_item)
             record = item['values']
             # show a message
-            print(record)
+            #print(record)
             #showinfo(title='Information', message=','.join(record))
     tree.bind('<<TreeviewSelect>>', item_selected)
 
@@ -97,7 +97,7 @@ def forward_button():
     for v,q in base.items():
         val=(current_slider_value.get())
         assign_values(v,val)
-        draw_table(generate_new_dict())
+        draw_table(generate_new_list())
         base=generate_questions(1)
     for v,q in base.items():
         question=q
@@ -186,7 +186,7 @@ slider.pack(pady=10)
 
 bf=tk.Button(root, text="Next",width=50,command=forward_button)
 bf.pack(side="right",pady=10,padx=(0,25), anchor="n")#.place(x=25,y=130)
-bb=tk.Button(root, text="Edit",width=10,command=edit)
+bb=tk.Button(root, text="History",width=10,command=edit)
 bb.pack(side="left",pady=10,padx=(25,0), anchor="n")#.place(x=325,y=130)
 
 draw_table(sample_table)

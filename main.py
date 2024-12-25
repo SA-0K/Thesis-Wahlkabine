@@ -1,3 +1,12 @@
+"""
+Main file that unites all other parts
+@author Oleksandr Kudriavchenko
+
+Copyright 2024 Johannes Kepler University Linz
+LIT Cyber-Physical Systems Lab
+All rights reserved
+"""
+
 from pdf_parser import *
 from keywords import *
 from database_manager import *
@@ -75,7 +84,7 @@ def temp_sol(tmp,answer):
         #answer=int(input())
         tmp[key]=answer"""
 for i in get_all_keywords():
-        user_interests[i]=0
+        user_interests[i]=5 #user is neutral in the begining
 def assign_values(key, answer):
     
     global user_interests
@@ -85,21 +94,30 @@ def assign_values(key, answer):
 
     #print(user_interests)
 
-def generate_new_dict():
+def generate_new_list():
+    """
+    Returns a sorted list of filtered topics 
+    """
     distance_dict=(rating(user_interests,get_name_vector()))
 
-
-    sorted_dict={k: v for k, v in sorted(distance_dict.items(),key=lambda item: item[1])}
-    return (sorted_dict)
+    sorted_list=[k if v>0 else 0 for k, v in sorted(distance_dict.items(),key=lambda item: item[1])]
+    
+    clean_list=[]
+    for i in sorted_list:
+        if i:
+            clean_list.append(i)
+    return clean_list
 
 def show_history(user_interests,already_asked):
     history={}
     
-    for key,value in sorted(user_interests.items()):
+    for key,value in (user_interests.items()):
         if key in already_asked[:-1]:
             history[key]=value
+        """
         else:
             print(already_asked)
             print(already_been_asked)
+            """
 
     return history
