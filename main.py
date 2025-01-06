@@ -15,8 +15,8 @@ from time import sleep
 from matching import rating
 
 
-user_interests ={}
-already_asked_questions=[]
+user_interests = {}        # stores user's choices 
+already_asked_questions=[] # stores asked questions, so they do not repeat
 
 def generate_db():
     """
@@ -24,7 +24,11 @@ def generate_db():
     to database
     """
     for file in glob("./Theses_Docs/*.pdf"):
-        insert_db(get_keywords(get_thesis_data(file)))
+        try:
+            insert_db(get_keywords(get_thesis_data(file)))
+            print(file)
+        except Exception as e:
+            print(e)
         sleep(30)
 
     generate_vectors()
@@ -47,6 +51,7 @@ def generate_questions(number):
         f"How often do you use {keyword} in your daily work (0-10)?",
         f"How familiar are you with the concepts of {keyword} (0-10)?",
         f"How experienced are you with {keyword} (0-10)?",
+        f"How skilled are you at using {keyword} (0-10)?",
         f"How interested are you in {keyword} (0-10)?"
 
 
@@ -54,27 +59,15 @@ def generate_questions(number):
 
     questions[keyword]=questions_template[randint(0,len(questions_template)-1)]
 
-    """questions_template=[
-        f"How often do you use {keyword} in your daily work (0-10)?",
-        f"How satisfied are you with your current {keyword} (0-10)?",
-        f"How important is a good {keyword} to your productivity (0-10)?",
-        f"How comfortable are you with {keyword} (0-10)?",
-        f"How skilled are you at using {keyword} (0-10)?",
-        f"How much do you like {keyword}?",
-        f"How important is {keyword} to you?",
-        f"How often do you think about {keyword}?",
-        f"How satisfied are you with your current {keyword}?"]"""
-
     return questions
 
 
 
 
-for i in get_all_keywords():
-        user_interests[i]=5 #user is neutral in the begining
-
 def assign_values(key, answer):
-    
+    """
+    Updates user_interests dictionary
+    """
     global user_interests
     if key in get_all_keywords():
         user_interests[key]=answer
@@ -95,16 +88,18 @@ def generate_new_list():
             clean_list.append(i)
     return clean_list
 
-def show_history(user_interests,already_asked):
+def generate_history(user_interests,already_asked):
+    """
+    Returns a history dictionary based on user interests and asked questions
+    """
     history={}
     
     for key,value in (user_interests.items()):
         if key in already_asked[:-1]:
             history[key]=value
-        """
-        else:
-            print(already_asked)
-            print(already_asked_questions)
-            """
 
     return history
+
+
+for i in get_all_keywords():
+        user_interests[i] = 5 # user is neutral in the begining
