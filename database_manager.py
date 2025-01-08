@@ -49,7 +49,7 @@ def get_all_keywords():
     for c in col.find():
         for k in c["keywords"]:
             if not k in all_keywords:
-                all_keywords.append(k.replace("\n","").replace("  "," "))
+                all_keywords.append(k)#.replace("\n","").replace("  "," "))
     return all_keywords
 
 def generate_vectors():
@@ -69,7 +69,16 @@ def generate_vectors():
         col.update_one({"_id":c["_id"]},{"$set":{"vector":vect}})   
     
     
-        
+def change_requirment(topic,keyword,value):
+    for c in col.find():
+        if c['name']==topic:
+            for i in c["keywords"]:
+                if i==keyword:
+                    vector = c["vector"]
+                    vector[keyword]=value
+                    col.update_one({"_id":c["_id"]},{"$set":{"vector":vector}})   
+
+                    return
     
 
 
