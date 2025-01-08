@@ -19,10 +19,28 @@ def Euclidean_matching(User,Topic):
     Filters topic if user interest is in [0;3)
     """
     result=0
+    filter=-3
     for interest,user_value in User.items():
         try: # In case of mismatching with databse
-            user_value -= 3   # move scale from [0;10] to [-3;7]
+            user_value -= filter   # move scale from [0;10] to [-3;7]
             topic_keyword_value = Topic[interest]
+            if topic_keyword_value>10:
+                """
+                Supervisor can create a requirement for a student
+                For example if topic has "Github" keyword
+                The value in database is 10
+                But if supervisor says "You must know Github for 7 out of 10"
+                The value in database is 17 (10 is presence in the topic and 7 is the requirement) 
+                
+                """
+                gate = topic_keyword_value%10
+                topic_keyword_value/=10
+
+                # filter is also substracted from gate (as well as from user_value),
+                #  to make comparison equally 
+                if gate-filter<user_value:
+                    return -1 # Topic is filtered (user is not proficient)
+
             result += (user_value-topic_keyword_value)**2
             #print(user_value,topic_keyword_value)
             if user_value*topic_keyword_value<0:
