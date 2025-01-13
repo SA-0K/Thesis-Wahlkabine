@@ -81,7 +81,7 @@ def update_values():
     """Updates all values and tables"""
     global edit_window, history_window
     assign_values(updating_key,current_slider_value2.get())
-    draw_table(generate_new_list())
+    draw_table(generate_new_topic_list())
     draw_history_table(history_window,generate_history(user_interests,already_asked_questions))
 
 
@@ -93,7 +93,7 @@ def forward_button():
     for v,q in base.items():
         val=(current_slider_value.get())
         assign_values(v,val)
-        draw_table(generate_new_list())
+        draw_table(generate_new_topic_list())
         base=generate_questions(1)
     for v,q in base.items():
         question=q
@@ -204,7 +204,7 @@ bf.pack(side="right",pady=10,padx=(0,25), anchor="n")#.place(x=25,y=130)
 bb=tk.Button(root, text="History",width=10,command=show_history)
 bb.pack(side="left",pady=10,padx=(25,0), anchor="n")#.place(x=325,y=130)
 
-draw_table(generate_new_list()) # Draws a table when the app started
+draw_table(generate_new_topic_list()) # Draws a table when the app started
 
 
 root.mainloop()

@@ -10,28 +10,12 @@ All rights reserved
 from pdf_parser import *
 from keywords import *
 from database_manager import *
-from glob import glob
-from time import sleep
 from matching import rating
 
 
 user_interests = {}        # stores user's choices 
 already_asked_questions=[] # stores asked questions, so they do not repeat
 
-def generate_database():
-    """
-    Adds topics from PDF's
-    to database
-    """
-    for file in glob("./Theses_Docs/*.pdf"):
-        try:
-            insert_database(get_keywords(get_thesis_data(file)))
-            print(file)
-        except Exception as e:
-            print(e)
-        sleep(30)
-
-    generate_vectors()
 
 
 def generate_questions(number):
@@ -74,7 +58,7 @@ def assign_values(key, answer):
                 
                 
 
-def generate_new_list():
+def generate_new_topic_list():
     """
     Returns a sorted list of filtered topics 
     """
@@ -83,9 +67,10 @@ def generate_new_list():
     sorted_list=[k if v>0 else 0 for k, v in sorted(distance_dict.items(),key=lambda item: item[1])]
     
     clean_list=[]
-    for i in sorted_list:
-        if i:
-            clean_list.append(i)
+    for data in sorted_list:
+        # if element is not ''
+        if data: 
+            clean_list.append(data)
     return clean_list
 
 def generate_history(user_interests,already_asked):
@@ -101,5 +86,5 @@ def generate_history(user_interests,already_asked):
     return history
 
 def init():
-    for i in get_all_keywords():
-            user_interests[i] = 5 # user is neutral in the begining
+    for key in get_all_keywords():
+            user_interests[key] = 5 # user is neutral in the begining

@@ -10,6 +10,8 @@ All rights reserved
 import pymongo
 from random import randint
 
+from glob import glob
+from time import sleep
 
 myclient = pymongo.MongoClient("mongodatabase://localhost:27017/")
 database = myclient["Database_"]
@@ -102,6 +104,20 @@ def change_requirment(topic,picked_keyword,new_value):
                     return
     
 
+def generate_database():
+    """
+    Adds topics from PDF's
+    to database
+    """
+    for file in glob("./Theses_Docs/*.pdf"):
+        try:
+            insert_database(get_keywords(get_thesis_data(file)))
+            print(file)
+        except Exception as e:
+            print(e)
+        sleep(30)
+
+    generate_vectors()
 
 def get_n_random_keywords(n):
     """
