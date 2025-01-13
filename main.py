@@ -18,14 +18,14 @@ from matching import rating
 user_interests = {}        # stores user's choices 
 already_asked_questions=[] # stores asked questions, so they do not repeat
 
-def generate_db():
+def generate_database():
     """
     Adds topics from PDF's
     to database
     """
     for file in glob("./Theses_Docs/*.pdf"):
         try:
-            insert_db(get_keywords(get_thesis_data(file)))
+            insert_database(get_keywords(get_thesis_data(file)))
             print(file)
         except Exception as e:
             print(e)
@@ -100,6 +100,6 @@ def generate_history(user_interests,already_asked):
 
     return history
 
-
-for i in get_all_keywords():
-        user_interests[i] = 5 # user is neutral in the begining
+def init():
+    for i in get_all_keywords():
+            user_interests[i] = 5 # user is neutral in the begining

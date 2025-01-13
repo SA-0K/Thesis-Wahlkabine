@@ -11,6 +11,7 @@ import tkinter as tk
 from tkinter import ttk
 from main import *
 
+main.init()
 
 updating_key=''
 

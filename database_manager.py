@@ -11,23 +11,26 @@ import pymongo
 from random import randint
 
 
-myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-db = myclient["Database_"]
-col = db["Theses"]
+myclient = pymongo.MongoClient("mongodatabase://localhost:27017/")
+database = myclient["Database_"]
+records = database["Theses"]
 
-def insert_db(arr):
+def insert_database(data_array):
     """
     Adds a new topic to database
     """
-    name, supervisor, descryption, keywords = arr[0], arr[1], arr[2], arr[3] 
-    mydict = { "name":name, "supervisor":supervisor, "descryption":descryption, "keywords":keywords }
-    col.insert_one(mydict)
+    name, supervisor, descryption, keywords = data_array[0], data_array[1], data_array[2], data_array[3] 
+    database_dictionary = { "name":name, "supervisor":supervisor, "descryption":descryption, "keywords":keywords }
+    records.insert_one(database_dictionary)
     
     
 
-def print_db():
-    for c in col.find():
-        print(c)
+def print_database():
+    """
+    Prints all database fields into a terminal
+    """
+    for record in records.find():
+        print(record)
 
 
 def get_name_vector():
@@ -37,18 +40,21 @@ def get_name_vector():
      {name:"b",vector:"2 3 7"}]
     """
     result =[]
-    for c in col.find():
-        tmp = {}
-        tmp["name"]=c["name"]
-        tmp["vector"]=c["vector"]
-        result.append(tmp)
+    for record in records.find():
+        name_vector_dictionary = {}
+        name_vector_dictionary["name"]=record["name"]
+        name_vector_dictionary["vector"]=record["vector"]
+        result.append(name_vector_dictionary)
     return result
 
 def get_all_keywords():
+    """
+    Returns an array of all keywords from all topics
+    """
     all_keywords=[]
-    for c in col.find():
-        for k in c["keywords"]:
-            if not k in all_keywords:
+    for record in records.find():
+        for key in record["keywords"]:
+            if not key in all_keywords:
                 all_keywords.append(k)#.replace("\n","").replace("  "," "))
     return all_keywords
 
@@ -59,51 +65,64 @@ def generate_vectors():
 
     all_keywords=get_all_keywords()
 
-    for c in col.find():
-        vect={}
-        for k in all_keywords:
-            if k in c["keywords"]:
-                vect[f"{k}"]=10
+    for record in records.find():
+        vector = {}
+        for key in all_keywords:
+            # if keyword is in the topic give it value 10, else 0
+            if key in record["keywords"]:
+                vector[f"{k}"]=10
             else:
-                vect[f"{k}"]=0
-        col.update_one({"_id":c["_id"]},{"$set":{"vector":vect}})   
+                vector[f"{k}"]=0
+
+        # adding/updating a vector to each record
+        records.update_one({"_id":record["_id"]},{"$set":{"vector":vector}})   
     
     
-def change_requirment(topic,keyword,value):
-    for c in col.find():
-        if c['name']==topic:
-            for i in c["keywords"]:
-                if i==keyword:
-                    vector = c["vector"]
-                    vector[keyword]=value
-                    col.update_one({"_id":c["_id"]},{"$set":{"vector":vector}})   
+def change_requirment(topic,picked_keyword,new_value):
+
+    """
+    Function for adding crucial requirements to a student
+    """
+
+    for record in records.find():
+
+        if record['name']==topic:
+        
+            for key in record["keywords"]:
+        
+                if key==picked_keyword:
+
+                    # extract vector
+                    vector = record["vector"]
+                    # edit value           
+                    vector[picked_keyword] = new_value  
+                    # write vector back
+                    records.update_one({"_id":record["_id"]},{"$set":{"vector":vector}})   
 
                     return
     
 
 
 def get_n_random_keywords(n):
+    """
+    Returns an array of n random keywords
+    
+    """
     result = []
-    tmp=[]
-
-    for c in col.find():
-        tmp+=(c["keywords"])
+    all_keywords=get_all_keywords()
     
     while n>0:
-        keyword=tmp[randint(0, len(tmp)-1)]
+
+        keyword = all_keywords[randint(0, len(tmp)-1)]
+
+        # do not add copies
         if not keyword in result:
             result.append(keyword)
             n-=1
-    return result
 
-def delete_db():
-    
-    db.col.delete_many({"name":"DEVELOPING AN EXTRACTOR FOR MINING VARIABILITY FROM PRODUCT VARIANTS\n"})
-    #col = db["Theses"]
+    return result
 
 
 if __name__=="__main__":
-    #print(get_name_vector())
-    generate_vectors()
-    print_db()
+    print_database()
     
