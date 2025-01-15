@@ -30,11 +30,36 @@ return name, supervisor, descryption, keywords
 ### Matching
 The matching is done by using an Euclidean distance formula. User choices are represented as a point in multidirectional coordinate system as well as the topics. 
 
+The function for it called `matching.Euclidean_matching(User,Topic)`.
+For each keyword we do this calculation:
+```
+result += (user_value-topic_keyword_value)**2
+```
+And returning the square root of `result` in the end.
+But there also is a `filter` variable. If user choice is less than `filter`, then the topic is not interesting for him and will be hidden (return negative distance).
+If the value for a keyword is more than 10, it means that there is a supervisor's requirement. If user do not satisfy the it, then the topic also will be hidden (return negative distance).
 
+### Requirements
+It is done by `change_requirment(topic,picked_keyword,new_value)` function. 
+By default all keywords that are present in the topic hae value 10, but if supervisor wants to create a requirement, he/she should set the value in range from 10 to 20.
+
+For example the value is 17.
+10 indicates, that keyword is present in this topic.
+7 is the requirement (gate value). If user answers the question with his value less than 7, the topic will be hidden from him.
 
 ## Usage
 
 Firstly call `databse_manager.generate_databbase()` to create a database from theses descryption files.
 They should be stored in Theses_Docs directory and have a pdf extension.
 
-Call the `main.init()` function to fill `main.user_interests` dictionary with neutral values (range of values is from 0 to 10, so neutral one is 5) .
+0. Call the `main.init()` function to fill `main.user_interests` dictionary with neutral values (range of values is from 0 to 10, so neutral one is 5) .
+
+1. Use the function `main.generate_questions(number)` to generate questions for the user.
+2. Then ask him for an input on a scale from 0 to 10.
+3. Use the function `main.assign_values()` to update `main.user_interests` dictionary.
+4. Call `main.generate_new_topic_list()` to update the values of topic distances. It will return a sorted list of topics, where first elements are the most recomended to a user.
+5. Repeat from step (1)
+
+
+
+You can find how all functionality used in `gui.py` and `requirments_gui.py` as they are crated for feature demonstrations.
