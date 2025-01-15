@@ -144,4 +144,4 @@ def get_n_random_keywords(n):
 
 if __name__=="__main__":
     print_database()
-    
+    print(get_name_vector)

@@ -13,29 +13,34 @@ import main
 
 main.init()
 
-updating_key=''
+updating_key='' # variable for storing keyword (user choice) that is being edited
 
+# init the main window
 root = tk.Tk()
 root.title("Theses matching")
 root.geometry("557x520")
 
-n=0
 
+
+# first question placement
 global value,question,base
-question=""
-value =""
+question = ""
+value = ""
 base=main.generate_questions(1)
 
+# tkinter variables for sliders
+main_slider_value=tk.DoubleVar()
+edit_slider_value=tk.DoubleVar()
 
 for v,q in base.items():
     value = v
     question =q
-
     label = tk.Label(root, text=question)
-
 label.pack(pady=30)
 
-def draw_table(table):
+
+
+def draw_topics_table(table):
     """
     Draws the table with topics in main window
     """
@@ -69,8 +74,6 @@ def draw_table(table):
     tree.place(x=15,y=200)
     
 
-current_slider_value=tk.DoubleVar()
-current_slider_value2=tk.DoubleVar()
 
 def close_edit():
     """Closes the edit window when OK or X is pressed"""
@@ -80,8 +83,8 @@ def close_edit():
 def update_values():
     """Updates all values and tables"""
     global edit_window, history_window
-    main.assign_values(updating_key,current_slider_value2.get())
-    draw_table(main.generate_new_topic_list())
+    main.assign_values(updating_key,edit_slider_value.get())
+    draw_topics_table(main.generate_new_topic_list())
     draw_history_table(history_window,main.generate_history())
 
 
@@ -91,22 +94,20 @@ def forward_button():
     """
     global question, value,base
     for v,q in base.items():
-        val=(current_slider_value.get())
+        val=(main_slider_value.get())
         main.assign_values(v,val)
-        draw_table(main.generate_new_topic_list())
+        draw_topics_table(main.generate_new_topic_list())
         base=main.generate_questions(1)
     for v,q in base.items():
         question=q
         value=v
     label.config(text=question)
 
-def slider2_changed(event):
+def edit_slider_changed(event):
     """
     Calls update when edit slider changes
     """
     update_values()
-    #global history_window
-    #draw_history_table(history_window,generate_history(user_interests,already_asked_questions))
     
 def edit(record):
     """
@@ -115,22 +116,19 @@ def edit(record):
     global edit_window
     edit_window=tk.Toplevel(root)
     edit_window.geometry('350x200')
-    #history_window.grab_release()
-    #edit_window.grab_set()
     edit_window.title("Choose new value :)")
-    #print(record)
     l=tk.Label(edit_window,text=record[0]).pack()
-    slider2 = ttk.Scale(
+    edit_slider = ttk.Scale(
         edit_window,
         from_=0,
         to= 10,
         length=300,
         orient='horizontal', 
-        command=slider2_changed,
-        variable=current_slider_value2
+        command=edit_slider_changed,
+        variable=edit_slider_value
     )
-    slider2.set(record[-1])
-    slider2.pack(pady=10)
+    edit_slider.set(record[-1])
+    edit_slider.pack(pady=10)
     bf1=tk.Button(edit_window, text="Ok",width=50,command=close_edit).pack()
     edit_window.protocol("WM_DELETE_WINDOW",close_edit)
             
@@ -194,17 +192,17 @@ slider = ttk.Scale(
     to= 10,
     length=400,
     orient='horizontal', 
-    variable=current_slider_value
+    variable=main_slider_value
 )
 slider.set(5)
 slider.pack(pady=10)
 
 bf=tk.Button(root, text="Next",width=50,command=forward_button)
-bf.pack(side="right",pady=10,padx=(0,25), anchor="n")#.place(x=25,y=130)
+bf.pack(side="right",pady=10,padx=(0,25), anchor="n")
 bb=tk.Button(root, text="History",width=10,command=show_history)
-bb.pack(side="left",pady=10,padx=(25,0), anchor="n")#.place(x=325,y=130)
+bb.pack(side="left",pady=10,padx=(25,0), anchor="n")
 
-draw_table(main.generate_new_topic_list()) # Draws a table when the app started
+draw_topics_table(main.generate_new_topic_list()) # Draws a table when the app started
 
 def main_window():
     root.mainloop()
