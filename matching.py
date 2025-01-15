@@ -22,7 +22,10 @@ def Euclidean_matching(User,Topic):
     filter=3
     for interest,user_value in User.items():
         try: # In case of mismatching with databse
-            user_value -= filter   # move scale from [0;10] to [-3;7]
+            
+            if user_value<filter:
+                return -1 # Topic is filtered (not interested for the user)
+            
             topic_keyword_value = Topic[interest]
             if topic_keyword_value>10:
                 """
@@ -36,16 +39,12 @@ def Euclidean_matching(User,Topic):
                 gate = topic_keyword_value%10
                 topic_keyword_value=10
 
-                # filter added back to user_value,
-                #  to make comparison equally 
-                if (user_value+filter)<gate:
+            
+                if user_value<gate:
                     return -1 # Topic is filtered (user is not proficient)
 
             result += (user_value-topic_keyword_value)**2
             #print(user_value,topic_keyword_value)
-            if user_value*topic_keyword_value<0:
-                return -1 # Topic is filtered (not interested for the user)
-            
         except:pass
     return sqrt(result)
     
