@@ -13,7 +13,7 @@ from random import randint
 from glob import glob
 from time import sleep
 
-myclient = pymongo.MongoClient("mongodatabase://localhost:27017/")
+myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 database = myclient["Database_"]
 records = database["Theses"]
 

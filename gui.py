@@ -9,7 +9,7 @@ All rights reserved
 
 import tkinter as tk
 from tkinter import ttk
-from main import *
+import main
 
 main.init()
 
@@ -206,7 +206,9 @@ bb.pack(side="left",pady=10,padx=(25,0), anchor="n")#.place(x=325,y=130)
 
 draw_table(generate_new_topic_list()) # Draws a table when the app started
 
+def main_window():
+    root.mainloop()
 
-root.mainloop()
-
+if __name__=="__main__":
+    main_window()
 

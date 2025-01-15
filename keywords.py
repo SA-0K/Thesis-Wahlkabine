@@ -1,3 +1,12 @@
+"""
+Extracting data from plaintext
+@author Oleksandr Kudriavchenko
+
+Copyright 2024 Johannes Kepler University Linz
+LIT Cyber-Physical Systems Lab
+All rights reserved
+"""
+
 import google.generativeai as genai
 from key import *
 genai.configure(api_key=KEY)
@@ -6,7 +15,7 @@ model = genai.GenerativeModel("gemini-1.5-flash")
 
 
 
-descryption="""Current Situation
+data_example="""Current Situation
 Extracting variability information from source code or other artifact types
 of a set of given product variants is a complex task that requires differ-
 encing files. This is currently mostly done by performing simple line-by-
@@ -44,4 +53,4 @@ def get_keywords(thesis_text):
 
 
 if __name__=="__main__":
-    print(get_keywords(descryption))
+    print(get_keywords(data_example))
