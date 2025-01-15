@@ -33,8 +33,6 @@ def Euclidean_matching(User,Topic):
                 The value in database is 17 (10 is presence in the topic and 7 is the requirement) 
                 
                 """
-                if user_value!=2:
-                    pass
                 gate = topic_keyword_value%10
                 topic_keyword_value=10
 
