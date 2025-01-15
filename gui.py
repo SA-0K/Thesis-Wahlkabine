@@ -24,7 +24,7 @@ n=0
 global value,question,base
 question=""
 value =""
-base=generate_questions(1)
+base=main.generate_questions(1)
 
 
 for v,q in base.items():
@@ -80,9 +80,9 @@ def close_edit():
 def update_values():
     """Updates all values and tables"""
     global edit_window, history_window
-    assign_values(updating_key,current_slider_value2.get())
-    draw_table(generate_new_topic_list())
-    draw_history_table(history_window,generate_history(user_interests,already_asked_questions))
+    main.assign_values(updating_key,current_slider_value2.get())
+    draw_table(main.generate_new_topic_list())
+    draw_history_table(history_window,main.generate_history())
 
 
 def forward_button():
@@ -92,9 +92,9 @@ def forward_button():
     global question, value,base
     for v,q in base.items():
         val=(current_slider_value.get())
-        assign_values(v,val)
-        draw_table(generate_new_topic_list())
-        base=generate_questions(1)
+        main.assign_values(v,val)
+        draw_table(main.generate_new_topic_list())
+        base=main.generate_questions(1)
     for v,q in base.items():
         question=q
         value=v
@@ -175,7 +175,7 @@ def show_history():
     Generates a gistory window
     """
     global history_window
-    history=generate_history(user_interests,already_asked_questions)
+    history=main.generate_history()
     
     history_window=tk.Toplevel(root)
     history_window.geometry('400x400')
@@ -204,7 +204,7 @@ bf.pack(side="right",pady=10,padx=(0,25), anchor="n")#.place(x=25,y=130)
 bb=tk.Button(root, text="History",width=10,command=show_history)
 bb.pack(side="left",pady=10,padx=(25,0), anchor="n")#.place(x=325,y=130)
 
-draw_table(generate_new_topic_list()) # Draws a table when the app started
+draw_table(main.generate_new_topic_list()) # Draws a table when the app started
 
 def main_window():
     root.mainloop()

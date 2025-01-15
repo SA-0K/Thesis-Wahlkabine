@@ -57,7 +57,7 @@ def get_all_keywords():
     for record in records.find():
         for key in record["keywords"]:
             if not key in all_keywords:
-                all_keywords.append(k)#.replace("\n","").replace("  "," "))
+                all_keywords.append(key)#.replace("\n","").replace("  "," "))
     return all_keywords
 
 def generate_vectors():
@@ -129,7 +129,7 @@ def get_n_random_keywords(n):
     
     while n>0:
 
-        keyword = all_keywords[randint(0, len(tmp)-1)]
+        keyword = all_keywords[randint(0, len(all_keywords)-1)]
 
         # do not add copies
         if not keyword in result:

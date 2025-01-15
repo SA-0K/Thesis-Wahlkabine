@@ -73,14 +73,14 @@ def generate_new_topic_list():
             clean_list.append(data)
     return clean_list
 
-def generate_history(user_interests,already_asked):
+def generate_history():
     """
     Returns a history dictionary based on user interests and asked questions
     """
     history={}
     
     for key,value in (user_interests.items()):
-        if key in already_asked[:-1]:
+        if key in already_asked_questions[:-1]:
             history[key]=value
 
     return history
