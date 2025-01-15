@@ -10,6 +10,9 @@ All rights reserved
 import pymongo
 from random import randint
 
+from keywords import get_keywords
+from pdf_parser import get_thesis_data
+
 from glob import glob
 from time import sleep
 
@@ -72,9 +75,9 @@ def generate_vectors():
         for key in all_keywords:
             # if keyword is in the topic give it value 10, else 0
             if key in record["keywords"]:
-                vector[f"{k}"]=10
+                vector[f"{key}"]=10
             else:
-                vector[f"{k}"]=0
+                vector[f"{key}"]=0
 
         # adding/updating a vector to each record
         records.update_one({"_id":record["_id"]},{"$set":{"vector":vector}})   

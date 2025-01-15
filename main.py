@@ -6,9 +6,6 @@ Copyright 2024 Johannes Kepler University Linz
 LIT Cyber-Physical Systems Lab
 All rights reserved
 """
-
-from pdf_parser import *
-from keywords import *
 from database_manager import *
 from matching import rating
 
