@@ -2,6 +2,8 @@
 
 This project is created to help students in choosing a topic for a thesis based on their interests and knowledge. 
 
+![](https://github.com/SA-0K/Thesis-Wahlkabine/blob/main/thesiswahlkabine.GIF)
+
 ## Information
 
 ### User's session data
