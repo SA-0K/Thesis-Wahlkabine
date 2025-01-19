@@ -1,4 +1,4 @@
-# Thesis-Walkhabine
+# Thesis-Wahlkabine
 
 This project is created to help students in choosing a topic for a thesis based on their interests and knowledge. 
 
