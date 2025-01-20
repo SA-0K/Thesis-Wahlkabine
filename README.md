@@ -27,7 +27,11 @@ It is done by using natural language processing. The funcrion gets raw text from
 ```
 return name, supervisor, descryption, keywords
 ```
+### Important information about `keywords.py`
+There is an example file that uses Gemini API. The model called Gemini 1.5 Flash.
+Information from ai.google.dev:
 
+"The Gemini API “free tier” is offered through the API service with lower rate limits for testing purposes. Google AI Studio usage is completely free in all [available countries](https://ai.google.dev/gemini-api/docs/available-regions)."
 
 ### Matching
 The matching is done by using an Euclidean distance formula. User choices are represented as a point in multidirectional coordinate system as well as the topics. 
