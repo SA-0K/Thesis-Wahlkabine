@@ -3,11 +3,20 @@ import tkinter as tk
 from tkinter import ttk
 import main
 
-main.init()
+
 root = tk.Tk()
 root.title("Edit requirements")
 root.geometry("560x300")
 edit_slider_value=tk.DoubleVar()
+present=tk.IntVar()
+
+"""
+Some methods from main are reused and user 
+interest should be 10 for all topics instead 
+of 5 so topics are not hidden from supervisor 
+"""
+for key in main.database_manager.get_all_keywords():
+    main.user_interests[key] = 10
 
 global current_topic_name
 current_topic_name = ""
@@ -19,14 +28,23 @@ def close_edit():
     global edit_window
     edit_window.destroy()
 
-def edit_slider_changed(event):
+def edit_changed(event=None):
+    
+    new_value=0
+ 
+    if present.get()!=0:
+        new_value=edit_slider_value.get()+present.get()
+    main.database_manager.change_requirment(current_topic_name,updating_key,new_value)
+
     name_vector_array=main.database_manager.get_name_vector()
     vector={}
+
     for nmv in name_vector_array:
         if nmv['name']==current_topic_name:
             vector=nmv['vector']
     draw_history_table(history_window,vector)
-    main.database_manager.change_requirment(current_topic_name,updating_key,edit_slider_value.get())
+
+
 
 def edit(record):
     """
@@ -37,13 +55,22 @@ def edit(record):
     edit_window.geometry('350x200')
     edit_window.title("Choose new value :)")
     l=tk.Label(edit_window,text=record[0]).pack()
+    checkbox = tk.Checkbutton(edit_window,
+                              text="Present in the topic",
+                              onvalue=10,
+                              offvalue=0,
+                              variable=present,
+                              command=edit_changed)
+    checkbox.flash()
+    checkbox.pack()
+    
     edit_slider = ttk.Scale(
         edit_window,
         from_=0,
-        to= 20,
+        to= 10,
         length=300,
         orient='horizontal', 
-        command=edit_slider_changed,
+        command=edit_changed,
         variable=edit_slider_value
     )
     edit_slider.set(record[-1])
@@ -95,7 +122,7 @@ def show_history(vector):
     history_window=tk.Toplevel(root)
     history_window.geometry('400x400')
     
-    history_window.title("History")
+    history_window.title("Keywords")
     draw_history_table(history_window,vector)
 
 

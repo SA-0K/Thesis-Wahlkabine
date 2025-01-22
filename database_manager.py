@@ -17,7 +17,7 @@ from glob import glob
 from time import sleep
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-database = myclient["Database_"]
+database = myclient["Database_1"]
 records = database["Theses"]
 
 def insert_database(data_array):
@@ -92,19 +92,21 @@ def change_requirment(topic,picked_keyword,new_value):
     for record in records.find():
 
         if record['name']==topic:
-        
+            """
+            S
+            It's not nessecery to check if the vector has a keyword,
+            because supervisor may want to add a new one.
+
             for key in record["keywords"]:
-        
-                if key==picked_keyword:
+                if key==picked_keyword:"""
 
-                    # extract vector
-                    vector = record["vector"]
-                    # edit value           
-                    vector[picked_keyword] = new_value  
-                    # write vector back
-                    records.update_one({"_id":record["_id"]},{"$set":{"vector":vector}})   
-
-                    return
+            # extract vector
+            vector = record["vector"]
+            # edit value           
+            vector[picked_keyword] = new_value  
+            # write vector back
+            records.update_one({"_id":record["_id"]},{"$set":{"vector":vector}})  
+            return
     
 
 def generate_database():
@@ -143,5 +145,6 @@ def get_n_random_keywords(n):
 
 
 if __name__=="__main__":
+    generate_database()
     print_database()
-    print(get_name_vector)
+    
